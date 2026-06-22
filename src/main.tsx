@@ -1,0 +1,70 @@
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ClerkProvider } from '@clerk/clerk-react';
+import Browse from './pages/Browse';
+import Auth from './pages/Auth';
+import Onboarding from './pages/Onboarding';
+import ListProperty from './pages/ListProperty';
+import Dashboard from './pages/Dashboard';
+import Admin from './pages/Admin';
+import NotFound from './pages/NotFound';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import ProtectedRoute from './components/ProtectedRoute';
+import './styles/global.css';
+
+const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <ClerkProvider
+      publishableKey={clerkKey}
+      afterSignInUrl="/onboarding"
+      afterSignUpUrl="/onboarding"
+    >
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Browse />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route
+            path="/onboarding"
+            element={
+              <ProtectedRoute>
+                <Onboarding />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/post-listing"
+            element={
+              <ProtectedRoute roles={['landlord', 'caretaker', 'agent']}>
+                <ListProperty />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute roles={['landlord', 'caretaker', 'agent']}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute roles={['admin', 'superadmin']}>
+                <Admin />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/404" element={<NotFound />} />
+          <Route path="*" element={<Navigate to="/404" replace />} />
+        </Routes>
+      </BrowserRouter>
+    </ClerkProvider>
+  </React.StrictMode>
+);
