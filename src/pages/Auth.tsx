@@ -86,13 +86,13 @@ export default function Auth() {
       const result = await signUp.create({ emailAddress: email, password });
 
       if (result.status === 'complete') {
-        // Create profile first (anon key works with open RLS),
-        // then activate the Clerk session — avoids race where ProtectedRoute
-        // sees isSignedIn=true but profile doesn't exist yet
-        await createProfileAndNavigate(result.createdUserId);
+        // Activate the Clerk session FIRST so ProtectedRoute
+        // sees isSignedIn=true before any navigation happens
         if (setActiveSignUp && result.createdSessionId) {
           await setActiveSignUp({ session: result.createdSessionId });
         }
+        // Then create profile in Supabase and navigate
+        await createProfileAndNavigate(result.createdUserId);
       } else {
         // Email verification is required — send verification code
         setPendingUserId(result.createdUserId);
@@ -117,11 +117,13 @@ export default function Auth() {
       const result = await signUp.attemptEmailAddressVerification({ code: verificationCode });
 
       if (result.status === 'complete') {
-        // Create profile before activating session (avoids race condition)
-        await createProfileAndNavigate(pendingUserId);
+        // Activate the Clerk session FIRST so ProtectedRoute
+        // sees isSignedIn=true before any navigation happens
         if (setActiveSignUp && result.createdSessionId) {
           await setActiveSignUp({ session: result.createdSessionId });
         }
+        // Then create profile in Supabase and navigate
+        await createProfileAndNavigate(pendingUserId);
         setShowVerification(false);
       } else {
         setError('The verification code is incorrect or expired. Please try again.');
@@ -179,6 +181,7 @@ export default function Auth() {
     }
 
     showToast('Account created! Welcome to NestList.', 'success');
+    setRegistering(false);
     if (role === 'admin' || role === 'superadmin') navigate('/admin', { replace: true });
     else if (role === 'landlord' || role === 'caretaker' || role === 'agent') navigate('/dashboard', { replace: true });
     else navigate('/', { replace: true });
