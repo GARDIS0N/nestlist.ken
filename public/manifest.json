@@ -1,0 +1,56 @@
+{
+  "name": "NestList — Kenya's Rental Platform",
+  "short_name": "NestList",
+  "description": "Kenya's Premium Rental Platform — Browse verified property listings from trusted landlords across Kenya. Direct contact, no middlemen.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
+  "theme_color": "#0A4D2E",
+  "background_color": "#F9FAFB",
+  "lang": "en-KE",
+  "dir": "ltr",
+  "categories": ["real estate", "property", "rentals", "housing", "lifestyle"],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "48x48 72x72 96x96 128x128 144x144 152x152 192x192 384x384 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "form_factor": "wide",
+      "label": "NestList — Browse Properties Across Kenya"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Properties",
+      "short_name": "Browse",
+      "description": "Browse available rental properties across Kenya",
+      "url": "/",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "96x96", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Post a Listing",
+      "short_name": "Post",
+      "description": "List your property for rent",
+      "url": "/post-listing",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "96x96", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Manage your listings and inquiries",
+      "url": "/dashboard",
+      "icons": [{ "src": "/icons/icon.svg", "sizes": "96x96", "type": "image/svg+xml" }]
+    }
+  ]
+}

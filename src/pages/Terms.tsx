@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { HouseBackgrounds } from '../components/HouseBackgrounds';
 
 const sections = [
   { title: 'Acceptance', content: 'By using NestList, you agree to these terms. If you do not agree, please do not use the platform.' },
@@ -15,31 +16,27 @@ const sections = [
 export default function Terms() {
   return (
     <div style={{
-      minHeight: '100vh',
-      background: '#F9FAFB',
-      fontFamily: 'Plus Jakarta Sans',
-      padding: '40px 20px',
+      minHeight: '100vh', background: '#F9FAFB',
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      padding: '40px 20px', position: 'relative',
+      overflow: 'hidden',
     }}>
-      <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+      <HouseBackgrounds opacity={0.04} color="#1E6B4A" blur sky ground density="low" />
+      <div style={{ maxWidth: '720px', margin: '0 auto', position: 'relative' }}>
         <Link to="/" style={{
-          color: '#1E6B4A', fontSize: '14px', fontWeight: 600, textDecoration: 'none', marginBottom: '20px', display: 'inline-block',
+          color: '#1E6B4A', fontSize: '14px', fontWeight: 600, textDecoration: 'none',
+          marginBottom: '20px', display: 'inline-block',
         }}>
           ← Back to Home
         </Link>
         <h1 style={{
-          fontSize: '32px',
-          fontWeight: 700,
-          color: '#111827',
-          fontFamily: "'DM Serif Display', Georgia, serif",
-          margin: '0 0 24px',
+          fontSize: '32px', fontWeight: 700, color: '#111827',
+          fontFamily: "'DM Serif Display', Georgia, serif", margin: '0 0 24px',
         }}>Terms of Service</h1>
         <p style={{ fontSize: '13px', color: '#6B7280', marginBottom: '32px' }}>Last updated: June 2026</p>
 
         {sections.map((s, i) => (
-          <div key={i} style={{
-            background: '#fff', borderRadius: '12px', padding: '20px',
-            marginBottom: '12px', border: '1px solid #E5E7EB',
-          }}>
+          <div key={i} className="card-base" style={{ padding: '20px', marginBottom: '12px' }}>
             <h2 style={{
               fontSize: '18px', fontWeight: 700, color: '#111827',
               fontFamily: "'DM Serif Display', Georgia, serif", margin: '0 0 8px',

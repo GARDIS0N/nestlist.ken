@@ -7,6 +7,8 @@ export const LISTING_FEES: Record<string, number> = {
   '3br':       1000,
   '4br':       1200,
   '5br_plus':  1500,
+  land:        2000,
+  commercial:  2500,
 };
 
 export const TYPE_LABELS: Record<string, string> = {
@@ -18,6 +20,8 @@ export const TYPE_LABELS: Record<string, string> = {
   '3br':       '3 Bedroom',
   '4br':       '4 Bedroom',
   '5br_plus':  '5+ Bedroom',
+  land:        'Land / Plot',
+  commercial:  'Commercial',
 };
 
 export const TYPE_EMOJIS: Record<string, string> = {
@@ -29,6 +33,8 @@ export const TYPE_EMOJIS: Record<string, string> = {
   '3br':       '\u{1F3F0}',
   '4br':       '\u{1F3EF}',
   '5br_plus':  '\u{1F3DB}\uFE0F',
+  land:        '\u{1F3D4}\uFE0F',
+  commercial:  '\u{1F3E2}',
 };
 
 export const AMENITIES = [
@@ -72,9 +78,35 @@ export const ROLE_LABELS: Record<string, string> = {
   landlord:    'Landlord',
   caretaker:   'Caretaker',
   agent:       'Agent',
-  tenant:      'Tenant',
+  tenant:      'Tenant / Buyer',
+  buyer:       'Buyer',
   admin:       'Admin',
   superadmin:  'Super Admin',
+};
+
+export const PURPOSE_LABELS: Record<string, string> = {
+  rent: 'For Rent',
+  sale: 'For Sale',
+  both: 'For Rent & Sale',
+};
+
+export const PURPOSE_EMOJIS: Record<string, string> = {
+  rent: '\u{1F3E0}',
+  sale: '\u{1F3CD}\uFE0F',
+  both: '\u{1F3E1}',
+};
+
+export const SALE_LISTING_FEES: Record<string, number> = {
+  single_room: 300,
+  bedsitter:   400,
+  studio:      450,
+  '1br':       800,
+  '2br':       1200,
+  '3br':       1500,
+  '4br':       2000,
+  '5br_plus':  2500,
+  land:        3000,
+  commercial:  3500,
 };
 
 export const LISTING_DURATION_DAYS = 30;

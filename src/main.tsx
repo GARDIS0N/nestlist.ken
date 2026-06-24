@@ -14,6 +14,37 @@ import Privacy from './pages/Privacy';
 import ProtectedRoute from './components/ProtectedRoute';
 import './styles/global.css';
 
+/* ─── Register Service Worker ─── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').then((registration) => {
+      // Check for updates on page load
+      registration.addEventListener('updatefound', () => {
+        const installingWorker = registration.installing;
+        if (installingWorker) {
+          installingWorker.addEventListener('statechange', () => {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New version available - show prompt if desired
+              console.log('[PWA] New version available. Refresh to update.');
+            }
+          });
+        }
+      });
+    }).catch((err) => {
+      console.error('[PWA] Service worker registration failed:', err);
+    });
+  });
+
+  // Handle service worker updates: when new SW takes over, reload
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!refreshing) {
+      refreshing = true;
+      window.location.reload();
+    }
+  });
+}
+
 const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { HouseBackgrounds } from '../components/HouseBackgrounds';
 
 export default function NotFound() {
   const navigate = useNavigate();
@@ -12,37 +13,29 @@ export default function NotFound() {
       justifyContent: 'center',
       background: '#F9FAFB',
       padding: '20px',
-      fontFamily: 'Plus Jakarta Sans',
+      fontFamily: "'Plus Jakarta Sans', sans-serif",
+      position: 'relative',
+      overflow: 'hidden',
     }}>
-      <div style={{ fontSize: '64px', marginBottom: '16px' }}>🏚️</div>
+      <HouseBackgrounds opacity={0.04} color="#1E6B4A" blur sky ground density="low" />
+
+      <div style={{ fontSize: '80px', marginBottom: '16px', animation: 'float 3s ease-in-out infinite' }}>🏚️</div>
       <h1 style={{
-        fontSize: '28px',
-        fontWeight: 700,
-        color: '#111827',
-        fontFamily: "'DM Serif Display', Georgia, serif",
-        margin: '0 0 8px',
+        fontSize: '28px', fontWeight: 700, color: '#111827',
+        fontFamily: "'DM Serif Display', Georgia, serif", margin: '0 0 8px',
       }}>Page Not Found</h1>
       <p style={{
-        fontSize: '14px',
-        color: '#6B7280',
-        margin: '0 0 24px',
-        textAlign: 'center',
+        fontSize: '14px', color: '#6B7280', margin: '0 0 32px',
+        textAlign: 'center', maxWidth: '300px',
       }}>
         This page doesn't exist or has been moved.
       </p>
       <button
         onClick={() => navigate('/')}
+        className="gradient-btn"
         style={{
-          background: 'linear-gradient(135deg, #1E6B4A, #34D399)',
-          color: '#ffffff',
-          border: 'none',
-          borderRadius: '12px',
-          padding: '13px 24px',
-          fontSize: '15px',
-          fontWeight: 700,
-          fontFamily: 'Plus Jakarta Sans',
-          cursor: 'pointer',
-          boxShadow: '0 4px 16px rgba(30,107,74,0.3)',
+          padding: '14px 28px', fontSize: '15px',
+          display: 'flex', alignItems: 'center', gap: '8px',
         }}
       >
         ← Back to Home

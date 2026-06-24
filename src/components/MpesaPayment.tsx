@@ -268,11 +268,11 @@ export default function MpesaPayment({
           <div style={{
             fontSize: '36px',
             fontWeight: 700,
-            color: countdown < 15 ? '#DC2626' : '#1E6B4A',
+            color: mpesa.countdown < 15 ? '#DC2626' : '#1E6B4A',
             fontFamily: 'Plus Jakarta Sans',
             marginBottom: '12px',
           }}>
-            {Math.floor(countdown / 60)}:{String(countdown % 60).padStart(2, '0')}
+            {Math.floor(mpesa.countdown / 60)}:{String(mpesa.countdown % 60).padStart(2, '0')}
           </div>
           <div style={{
             width: '100%',
