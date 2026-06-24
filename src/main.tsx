@@ -12,6 +12,7 @@ import NotFound from './pages/NotFound';
 import Terms from './pages/Terms';
 import Privacy from './pages/Privacy';
 import ProtectedRoute from './components/ProtectedRoute';
+import { ToastProvider } from './hooks/ToastContext';
 import './styles/global.css';
 
 /* ─── Register Service Worker ─── */
@@ -51,9 +52,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ClerkProvider
       publishableKey={clerkKey}
-      afterSignInUrl="/onboarding"
-      afterSignUpUrl="/onboarding"
+      afterSignInUrl="/"
+      afterSignUpUrl="/"
     >
+      <ToastProvider>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Browse />} />
@@ -96,6 +98,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
       </BrowserRouter>
+      </ToastProvider>
     </ClerkProvider>
   </React.StrictMode>
 );

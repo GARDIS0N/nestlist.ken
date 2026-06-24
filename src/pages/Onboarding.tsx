@@ -26,16 +26,12 @@ export default function Onboarding() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (!profileLoading && profile) {
-      if (['admin', 'superadmin'].includes(profile.role || '')) {
-        navigate('/admin', { replace: true });
-      } else if (['landlord', 'caretaker', 'agent'].includes(profile.role || '')) {
-        navigate('/dashboard', { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }
+    if (profile) {
+      setName(profile.full_name || user?.fullName || '');
+      setPhone(profile.phone?.replace('254', '') || '');
+      if (profile.role) setRole(profile.role as Role);
     }
-  }, [profile, profileLoading, navigate]);
+  }, [profile, user]);
 
   if (!user) return null;
 

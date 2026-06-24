@@ -4,8 +4,9 @@ import { useSignIn, useSignUp, useUser, useClerk } from '@clerk/clerk-react';
 import { supabase } from '../lib/supabase';
 import { ROLE_LABELS } from '../lib/constants';
 import { HouseBackgrounds } from '../components/HouseBackgrounds';
+import { useToastContext } from '../hooks/ToastContext';
 
-type Role = 'landlord' | 'caretaker' | 'agent' | 'tenant';
+type Role = 'landlord' | 'caretaker' | 'agent' | 'tenant' | 'admin' | 'superadmin';
 
 const roleOptions: { role: Role; emoji: string; desc: string }[] = [
   { role: 'landlord', emoji: '\u{1F3E0}', desc: 'I own property to rent' },
@@ -32,6 +33,7 @@ export default function Auth() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [forgotMode, setForgotMode] = useState(false);
+  const { show: showToast } = useToastContext();
   const [pendingRetry, setPendingRetry] = useState<{
     userId: string;
     profile: { full_name: string; phone: string; email: string; role: string };
@@ -171,7 +173,10 @@ export default function Auth() {
       return;
     }
 
-    navigate('/onboarding', { replace: true });
+    showToast('Account created! Welcome to NestList.', 'success');
+    if (role === 'admin' || role === 'superadmin') navigate('/admin', { replace: true });
+    else if (role === 'landlord' || role === 'caretaker' || role === 'agent') navigate('/dashboard', { replace: true });
+    else navigate('/', { replace: true });
   };
 
   const handleRetrySupabase = async () => {
@@ -187,7 +192,10 @@ export default function Auth() {
       });
       if (error) throw new Error(error.message);
       setPendingRetry(null);
-      navigate('/onboarding', { replace: true });
+      const retryRole = pendingRetry.profile.role;
+      if (retryRole === 'admin' || retryRole === 'superadmin') navigate('/admin', { replace: true });
+      else if (retryRole === 'landlord' || retryRole === 'caretaker' || retryRole === 'agent') navigate('/dashboard', { replace: true });
+      else navigate('/', { replace: true });
     } catch (err: any) {
       setError(`Profile setup still failed: ${err.message}. You can try again or contact support.`);
     } finally {
@@ -211,6 +219,8 @@ export default function Auth() {
       if (setActiveSignIn && result.createdSessionId) {
         await setActiveSignIn({ session: result.createdSessionId });
       }
+      // After login, ProtectedRoute handles redirect to /onboarding if no profile,
+      // or to dashboard/admin/home based on role — navigate to / which triggers that logic
       navigate('/', { replace: true });
     } catch (err: any) {
       setError(mapClerkError(err));

@@ -325,7 +325,7 @@ export default function Navbar() {
           </button>
         </div>
         <BottomNavItem icon="📋" label="Listings" active={isActive('/dashboard')} onClick={() => navigate('/dashboard')} />
-        <BottomNavItem icon="👤" label="Profile" active={isActive('/auth')} onClick={() => navigate('/auth')} />
+        <BottomNavItem icon="👤" label="Profile" active={isActive(isSignedIn ? '/dashboard' : '/auth')} onClick={() => navigate(isSignedIn ? '/dashboard' : '/auth')} />
       </div>
     </>
   );
