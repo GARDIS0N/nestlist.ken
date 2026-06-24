@@ -86,11 +86,13 @@ export default function Auth() {
       const result = await signUp.create({ emailAddress: email, password });
 
       if (result.status === 'complete') {
-        // Sign-up is complete (no email verification needed) — create session
+        // Create profile first (anon key works with open RLS),
+        // then activate the Clerk session — avoids race where ProtectedRoute
+        // sees isSignedIn=true but profile doesn't exist yet
+        await createProfileAndNavigate(result.createdUserId);
         if (setActiveSignUp && result.createdSessionId) {
           await setActiveSignUp({ session: result.createdSessionId });
         }
-        await createProfileAndNavigate(result.createdUserId);
       } else {
         // Email verification is required — send verification code
         setPendingUserId(result.createdUserId);
@@ -115,10 +117,11 @@ export default function Auth() {
       const result = await signUp.attemptEmailAddressVerification({ code: verificationCode });
 
       if (result.status === 'complete') {
+        // Create profile before activating session (avoids race condition)
+        await createProfileAndNavigate(pendingUserId);
         if (setActiveSignUp && result.createdSessionId) {
           await setActiveSignUp({ session: result.createdSessionId });
         }
-        await createProfileAndNavigate(pendingUserId);
         setShowVerification(false);
       } else {
         setError('The verification code is incorrect or expired. Please try again.');
@@ -156,9 +159,10 @@ export default function Auth() {
       role,
       is_active: true,
       created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
 
-    const { error: profileError } = await supabase.from('profiles').insert(profileData);
+    const { error: profileError } = await supabase.from('profiles').upsert(profileData, { onConflict: 'id' });
 
     if (profileError) {
       setPendingRetry({
@@ -170,6 +174,7 @@ export default function Auth() {
         `Click "Retry" below to try again.`
       );
       setRegistering(false);
+      setShowVerification(false);
       return;
     }
 
