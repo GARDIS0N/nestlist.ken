@@ -36,7 +36,7 @@ export default function Auth() {
   const { show: showToast } = useToastContext();
   const [pendingRetry, setPendingRetry] = useState<{
     userId: string;
-    profile: { full_name: string; phone: string; email: string; role: string };
+    profile: { full_name: string; phone: string; role: string };
   } | null>(null);
   const [showVerification, setShowVerification] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
@@ -158,7 +158,6 @@ export default function Auth() {
       id: userId,
       full_name: name,
       phone: formatPhone(phone),
-      email,
       role,
       is_active: true,
       created_at: new Date().toISOString(),
@@ -170,7 +169,7 @@ export default function Auth() {
     if (profileError) {
       setPendingRetry({
         userId,
-        profile: { full_name: name, phone: formatPhone(phone), email, role: role || 'tenant' },
+        profile: { full_name: name, phone: formatPhone(phone), role: role || 'tenant' },
       });
       setError(
         `Your NestList account was created, but we couldn't save your profile. ` +
@@ -195,7 +194,9 @@ export default function Auth() {
     try {
       const { error } = await supabase.from('profiles').upsert({
         id: pendingRetry.userId,
-        ...pendingRetry.profile,
+        full_name: pendingRetry.profile.full_name,
+        phone: pendingRetry.profile.phone,
+        role: pendingRetry.profile.role,
         is_active: true,
         updated_at: new Date().toISOString(),
       });

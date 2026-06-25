@@ -45,7 +45,7 @@ export default function Onboarding() {
         : null;
       const { error: dbError } = await supabase.from('profiles').upsert({
         id: user.id, full_name: name, phone: formattedPhone,
-        email: user.primaryEmailAddress?.emailAddress || '', role,
+        role,
         is_active: true, updated_at: new Date().toISOString(),
       });
       if (dbError) throw dbError;
