@@ -95,7 +95,7 @@ export default function Auth() {
         await createProfileAndNavigate(result.createdUserId);
       } else {
         // Email verification is required — send verification code
-        setPendingUserId(result.createdUserId);
+        // Note: createdUserId is null until verification completes
         await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
         setShowVerification(true);
         setError('');
@@ -109,7 +109,7 @@ export default function Auth() {
   };
 
   const handleVerifyCode = async () => {
-    if (!signUp || !verificationCode || !pendingUserId) return;
+    if (!signUp || !verificationCode) return;
     setLoading(true);
     setError('');
     setRegistering(true);
@@ -123,7 +123,8 @@ export default function Auth() {
           await setActiveSignUp({ session: result.createdSessionId });
         }
         // Then create profile in Supabase and navigate
-        await createProfileAndNavigate(pendingUserId);
+        // createdUserId is now populated since verification is complete
+        await createProfileAndNavigate(result.createdUserId);
         setShowVerification(false);
       } else {
         setError('The verification code is incorrect or expired. Please try again.');
